@@ -23,13 +23,13 @@ func pick(root string, depth int, icons bool) error {
 		return err
 	}
 	if len(rels) == 0 {
-		return fmt.Errorf("no repositories found in %s (try `repo clone <url>`)", root)
+		return fmt.Errorf("no repositories found in %s (try `repos clone <url>`)", root)
 	}
 
 	// stdout is captured by the shell function, so draw on the terminal.
 	tty, err := os.OpenFile("/dev/tty", os.O_RDWR, 0)
 	if err != nil {
-		return fmt.Errorf("repo needs a terminal: %w", err)
+		return fmt.Errorf("repos needs a terminal: %w", err)
 	}
 	defer tty.Close()
 

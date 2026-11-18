@@ -8,7 +8,7 @@ import (
 )
 
 // History is a plain list of absolute repository paths, most recent first,
-// stored at $XDG_STATE_HOME/repo/history (default ~/.local/state/repo/history).
+// stored at $XDG_STATE_HOME/repos/history (default ~/.local/state/repos/history).
 // Errors are deliberately ignored: history is a convenience.
 
 const historyLimit = 500
@@ -22,7 +22,7 @@ func historyFile() string {
 		}
 		dir = filepath.Join(home, ".local", "state")
 	}
-	return filepath.Join(dir, "repo", "history")
+	return filepath.Join(dir, "repos", "history")
 }
 
 func loadHistory() []string {

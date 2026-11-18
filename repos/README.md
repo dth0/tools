@@ -1,8 +1,8 @@
-# repo
+# repos
 
 A fuzzy picker and cloner for your local git repositories.
 
-`repo` keeps every clone under one base directory (`~/Repos` by default),
+`repos` keeps every clone under one base directory (`~/Repos` by default),
 organised by where it came from, and gives you a terminal UI to jump between
 them. You can see each repo's git status at a glance and act on a repo
 without leaving the picker.
@@ -50,9 +50,9 @@ without leaving the picker.
 Requires Go and `git`.
 
 ```sh
-make install                                  # installs to $(go env GOBIN) or $(go env GOPATH)/bin
-# or, to put it somewhere specific:
-CGO_ENABLED=0 go build -o ~/.local/bin/repo .
+make install                     # installs to ~/.local/bin/repos
+make install BINDIR=/usr/local/bin   # or somewhere else
+make uninstall                   # removes it again (same BINDIR rules)
 ```
 
 The build must run with `CGO_ENABLED=0`, which the Makefile sets for you. One
@@ -64,13 +64,13 @@ Make sure the install directory is on your `PATH`.
 
 ## Shell setup
 
-A program can't change its parent shell's working directory. So `repo` prints
-the path you picked, and a small shell function, `repos`, `cd`s into it. Add
-this to your `~/.zshrc` or `~/.bashrc`, after the line that puts `repo` on
-your `PATH`:
+A program can't change its parent shell's working directory. So the `repos`
+binary prints the path you picked, and a shell function of the same name
+`cd`s into it. Add this to your `~/.zshrc` or `~/.bashrc`, after the line
+that puts `repos` on your `PATH`:
 
 ```sh
-eval "$(repo --init zsh)"    # or: repo --init bash
+eval "$(repos --init zsh)"    # or: repos --init bash
 ```
 
 This defines:
@@ -78,12 +78,13 @@ This defines:
 ```sh
 repos() {
   local dir
-  dir="$(command repo "$@")" || return
+  dir="$(command repos "$@")" || return
   [ -n "$dir" ] && cd "$dir"
 }
 ```
 
-Use **`repos`** day to day. Running `repo` directly only prints the path.
+The function shadows the binary, and `command repos` skips the function to
+run the binary. Without the function, `repos` only prints the path.
 
 ## Usage
 
@@ -127,9 +128,9 @@ The preview pane hides itself when the terminal is narrower than 80 columns.
 
 #### What gets listed
 
-`repo` walks the base directory up to 5 levels deep:
+`repos` walks the base directory up to 5 levels deep:
 
-- Every directory containing `.git` is listed by its relative path. `repo`
+- Every directory containing `.git` is listed by its relative path. `repos`
   doesn't look inside repositories.
 - Hidden directories are skipped.
 - Top-level folders that aren't repositories and contain none are listed
@@ -172,7 +173,7 @@ folders are removed.
 | `--depth <n>` | | `2` | Depth of the file tree in the **Tree** tab |
 | `--init <shell>` | | | Print the shell function (`bash`, `zsh`) and exit |
 
-Flags go before the subcommand: `repo --base ~/work clone <url>`.
+Flags go before the subcommand: `repos --base ~/work clone <url>`.
 
 To enable icons permanently, add `export REPO_ICONS=1` to your shell
 config.
@@ -181,7 +182,7 @@ config.
 
 | Path | Purpose |
 |---|---|
-| `$XDG_STATE_HOME/repo/history` (default `~/.local/state/repo/history`) | Recently used repos, most recent first, one absolute path per line (max 500). Safe to delete. |
+| `$XDG_STATE_HOME/repos/history` (default `~/.local/state/repos/history`) | Recently used repos, most recent first, one absolute path per line (max 500). Safe to delete. |
 
 ## Notes
 
@@ -203,7 +204,7 @@ config.
 
 ```sh
 make test     # go test ./...
-make build    # ./repo
+make build    # ./repos
 ```
 
 | File | Contents |

@@ -22,7 +22,7 @@ import (
 // function to cd into.
 func clone(root string, args []string) error {
 	if len(args) < 1 || len(args) > 2 {
-		return errors.New("usage: repo clone <url> [path]")
+		return errors.New("usage: repos clone <url> [path]")
 	}
 	url := args[0]
 	var rel string

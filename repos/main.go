@@ -1,14 +1,14 @@
-// repo is a fuzzy project picker and cloner for ~/Repos.
+// repos is a fuzzy project picker and cloner for ~/Repos.
 //
-// A child process can't change its parent shell's working directory, so repo
+// A child process can't change its parent shell's working directory, so repos
 // prints the selected path on stdout and a small shell function does the cd:
 //
-//	eval "$(repo --init zsh)"   # defines `repos`
+//	eval "$(repos --init zsh)"   # defines the `repos` shell function
 //
 // Usage:
 //
-//	repo [flags]                      pick a repository
-//	repo [flags] clone <url> [path]   clone <url> into <base>/<host>/<owner>/<repo>
+//	repos [flags]                     pick a repository
+//	repos [flags] clone <url> [path]  clone <url> into <base>/<host>/<owner>/<repo>
 //	                                  (or <base>/<path>) and print its path
 package main
 
@@ -22,7 +22,7 @@ import (
 
 const shellInit = `repos() {
   local dir
-  dir="$(command repo "$@")" || return
+  dir="$(command repos "$@")" || return
   [ -n "$dir" ] && cd "$dir"
 }
 `
@@ -69,8 +69,8 @@ func main() {
 func usage() {
 	out := flag.CommandLine.Output()
 	fmt.Fprintln(out, "Usage:")
-	fmt.Fprintln(out, "  repo [flags]                      pick a repository")
-	fmt.Fprintln(out, "  repo [flags] clone <url> [path]   clone <url> into <base>/<host>/<owner>/<repo>")
+	fmt.Fprintln(out, "  repos [flags]                     pick a repository")
+	fmt.Fprintln(out, "  repos [flags] clone <url> [path]  clone <url> into <base>/<host>/<owner>/<repo>")
 	fmt.Fprintln(out, "\nPicker keys:")
 	fmt.Fprintln(out, "  enter cd · ctrl-o editor · ctrl-b browser · ctrl-y copy path · ctrl-d delete")
 	fmt.Fprintln(out, "  ctrl-t cycle host filter · tab info/tree · esc quit")
@@ -119,6 +119,6 @@ func tildify(p string) string {
 }
 
 func fatal(err error) {
-	fmt.Fprintln(os.Stderr, "repo:", err)
+	fmt.Fprintln(os.Stderr, "repos:", err)
 	os.Exit(1)
 }
